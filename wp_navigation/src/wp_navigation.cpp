@@ -14,6 +14,7 @@
 #include <move_base_msgs/MoveBaseAction.h>
 #include <actionlib/client/simple_action_client.h>
 #include <tf/transform_broadcaster.h>
+#include <tf/transform_listener.h>
 
 #define GAIN_CHASE -0.01
 #define PNT_START_CHASE 13
@@ -64,7 +65,7 @@ public:
 	RoboCtrl() : it_(node), ac("/red_bot/move_base", true)
 	{
 	   ros::NodeHandle node;
-	   //購読するtopic名
+           //購読するtopic名
 	   //odom_sub_ = node.subscribe("odom", 1, &RoboCtrl::odomCallback, this);
 	   image_sub_ = it_.subscribe("/red_bot/image_raw", 1, &RoboCtrl::imageCb, this);
 
@@ -108,6 +109,7 @@ public:
 	    geometry_msgs::Twist twist;
 
 	    checkWaypoint();
+            getCurrentPosition();
 
             // STATE_CHASEの場合 P制御で追いかける
 	    if(m_state == STATE_CHASE) {
@@ -276,6 +278,31 @@ public:
 		return;
        }
 
+       bool getCurrentPosition()
+       {
+           
+           double x,y,yaw;
+           try
+           {
+               tf::StampedTransform trans;
+               tfl_.waitForTransform("red_bot/map", "red_bot/base_link", ros::Time(0), ros::Duration(0.5));
+               tfl_.lookupTransform("red_bot/map", "red_bot/base_link", ros::Time(0), trans);
+
+               x = trans.getOrigin().x(); 
+               y = trans.getOrigin().y();
+               yaw = tf::getYaw(trans.getRotation());
+           }
+           catch ( tf::TransformException &e )
+           {
+               ROS_WARN("%s", e.what());
+               return false;
+           }
+
+            ROS_INFO("Now Pos %0.3f %0.3f %0.3f", x, y, yaw);
+
+           return true;
+       } 
+
        void imageCb(const sensor_msgs::ImageConstPtr& msg)
        {
 	    const int centerpnt = 200;
@@ -382,6 +409,9 @@ public:
 		int m_destPnt;
 		bool m_isSent;
 		MoveBaseClient ac;
+
+                //現在位置取得用
+                tf::TransformListener tfl_;
 };
 
 int main(int argc, char **argv)
