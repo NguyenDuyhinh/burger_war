@@ -20,6 +20,7 @@
 #define PNT_START_CHASE 13
 
 typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
+std::string ROBOT_NAME;
 
 struct MyPose {
   double x;
@@ -61,17 +62,16 @@ private:
 	};
 
 public:
-     //☆赤と青でaction_client名の変更が必要！！
-	RoboCtrl() : it_(node), ac("/red_bot/move_base", true)
+	RoboCtrl() : it_(node), ac(ROBOT_NAME+"move_base", true)
 	{
 	   ros::NodeHandle node;
            //購読するtopic名
 	   //odom_sub_ = node.subscribe("odom", 1, &RoboCtrl::odomCallback, this);
-	   image_sub_ = it_.subscribe("/red_bot/image_raw", 1, &RoboCtrl::imageCb, this);
+	   image_sub_ = it_.subscribe("image_raw", 1, &RoboCtrl::imageCb, this);
 
 	   //配布するtopic名
 	   //twist_pub_ = node.advertise<geometry_msgs::Twist>("/mobile_base/commands/velocity", 1);
-	   twist_pub_ = node.advertise<geometry_msgs::Twist>("/red_bot/cmd_vel", 1);
+	   twist_pub_ = node.advertise<geometry_msgs::Twist>("cmd_vel", 1);
 
            //内部変数初期化
 	   m_frontspeed = 0.5;
@@ -81,6 +81,7 @@ public:
            // まず最初はウェイポイント
 	   m_state = STATE_WAYPOINT;
 
+      MoveBaseClient ac(ROBOT_NAME+"/move_base", true);
 	   initWaypoint();
 	   cv::namedWindow(OPENCV_WINDOW);
 	}
@@ -237,8 +238,7 @@ public:
          // ウェイポイントの更新 or 初回時 or STATE_CHASEからの復帰
          move_base_msgs::MoveBaseGoal goal;
          // map(地図)座標系
-   //☆赤と青でframe名の変更が必要！！
-         goal.target_pose.header.frame_id = "/red_bot/map";
+         goal.target_pose.header.frame_id = ROBOT_NAME+"/map";
          // 現在時刻
          goal.target_pose.header.stamp = ros::Time::now();
          goal.target_pose.pose.position.x =  way_point[n_ptr].x;
@@ -284,10 +284,9 @@ public:
            double x,y,yaw;
            try
            {
-   //☆赤と青でframe名の変更が必要！！
                tf::StampedTransform trans;
-               tfl_.waitForTransform("red_bot/map", "red_bot/base_link", ros::Time(0), ros::Duration(0.5));
-               tfl_.lookupTransform("red_bot/map", "red_bot/base_link", ros::Time(0), trans);
+               tfl_.waitForTransform(ROBOT_NAME+"/map", ROBOT_NAME+"+base_link", ros::Time(0), ros::Duration(0.5));
+               tfl_.lookupTransform(ROBOT_NAME+"/map", ROBOT_NAME+"/base_link", ros::Time(0), trans);
 
                x = trans.getOrigin().x(); 
                y = trans.getOrigin().y();
@@ -422,6 +421,8 @@ int main(int argc, char **argv)
 	RoboCtrl robo_ctrl;
 	ros::Rate r(20);
 
+   ros::param::get("~robot_name", ROBOT_NAME);
+   ROS_INFO("ROBOT_NAME: %s \n\r",ROBOT_NAME.c_str());
 	while (ros::ok())
 	{
 		robo_ctrl.moveRobo();

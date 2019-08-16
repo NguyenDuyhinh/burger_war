@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="robot_name" default="red_bot"/>
+
+  <!-- move_baseの起動 -->
+  <include file="$(find burger_navigation)/launch/burger_navigation.launch">
+    <arg name="robot_name" value="$(arg robot_name)" />
+  </include>
+
+  <!-- ウェイポイント送信ノードの起動 -->
+  <node pkg="wp_navigation" type="wp_navigation" name="$(anon wp_navigation)">
+    <param name="robot_name" value="$(arg robot_name)"/>
+  </node>
+</launch>
