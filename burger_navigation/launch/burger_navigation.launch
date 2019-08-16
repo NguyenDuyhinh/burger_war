@@ -75,17 +75,18 @@
     <rosparam file="$(find burger_navigation)/param/dwa_local_planner_params_burger.yaml" command="load" />
     <remap from="cmd_vel" to="$(arg cmd_vel_topic)"/>
     <remap from="odom" to="$(arg odom_topic)"/>
+    <remap from="scan" to="$(arg robot_name)/scan"/>
     <param name="DWAPlannerROS/min_vel_x" value="0.0" if="$(arg move_forward_only)" />
 
     <param name="local_costmap/global_frame"             value="$(arg robot_name)/odom"/>
-    <param name="local_costmap/robot_base_frame"             value="$(arg robot_name)/base_link"/>
-    <param name="global_costmap/robot_base_frame"            value="$(arg robot_name)/base_link"/>
+    <param name="local_costmap/robot_base_frame"             value="$(arg robot_name)/base_footprint"/>
+    <param name="global_costmap/robot_base_frame"            value="$(arg robot_name)/base_footprint"/>
     <param name="global_costmap/global_frame"            value="$(arg robot_name)/map"/>
   </node>
 
   <!-- rviz -->
   <group if="$(arg open_rviz)"> 
-    <node pkg="rviz" type="rviz" name="rviz" required="true" args="-d $(find burger_navigation)/rviz/$(arg robot_name)_navigation.rviz">
+    <node pkg="rviz" type="rviz" name="rviz" required="true" args="-d $(find burger_navigation)/rviz/$(arg robot_name)_navigation.rviz" launch-prefix="xterm -font r16 -bg black -e">
       <remap from="/move_base_simple/goal" to="move_base_simple/goal"/>
     </node>
   </group>
