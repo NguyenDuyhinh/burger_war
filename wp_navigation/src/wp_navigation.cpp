@@ -284,6 +284,7 @@ public:
            double x,y,yaw;
            try
            {
+   //☆赤と青でframe名の変更が必要！！
                tf::StampedTransform trans;
                tfl_.waitForTransform("red_bot/map", "red_bot/base_link", ros::Time(0), ros::Duration(0.5));
                tfl_.lookupTransform("red_bot/map", "red_bot/base_link", ros::Time(0), trans);
