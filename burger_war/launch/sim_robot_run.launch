@@ -1,19 +1,35 @@
 <?xml version="1.0"?>
 <launch>
 
+<!-- red_bot,blue_botで使わない方はすべてコメントアウトまたは、相手の内容を記述してください -->
+
 <!-- blue side robot -->
   <group ns="blue_bot">
       <!-- enemy bot run -->
-      <node pkg="burger_war" type="enemy.py" name="enemyRun" output="screen"/>
+
+      <!-- サンプルのnavigationを動かす場合 -->
+      <include file="$(find burger_navigation)/launch/your_burger_navigation_sample.launch">
+      
+      <!-- ウェイポイントでの移動ノードを動かす場合 -->
+      <!--<include file="$(find wp_navigation)/launch/wp_navigation.launch">-->
+        <arg name="robot_name" value="blue_bot" />
+      </include>
   </group>
 
 <!-- red side robot -->
   <group ns="red_bot">
       <!-- Your robot control node run -->
-      <include file="$(find burger_war)/launch/your_burger.launch">
+
+      <!-- サンプルのnavigationを動かす場合 -->
+      <!--<include file="$(find burger_navigation)/launch/your_burger_navigation_sample.launch">--> 
+      
+      <!-- ウェイポイントでの移動ノードを動かす場合 -->
+      <include file="$(find wp_navigation)/launch/wp_navigation.launch">
+
         <arg name="robot_name" value="red_bot" />
       </include>
   </group>
+
 
 </launch>
 

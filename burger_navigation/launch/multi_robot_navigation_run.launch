@@ -4,8 +4,11 @@
 <!-- blue side robot -->
   <group ns="blue_bot">
       <!-- enemy bot run -->
-      <include file="$(find burger_navigation)/launch/your_burger_navigation_sample.launch">
+
+      <!-- サンプルのnavigationを動かす場合 -->
+      <include file="$(find burger_navigation)/launch/your_burger_navigation_sample.launch">-->
       
+      <!-- ウェイポイントでの移動ノードを動かす場合 -->
       <!--<include file="$(find wp_navigation)/launch/wp_navigation.launch">-->
         <arg name="robot_name" value="blue_bot" />
       </include>
