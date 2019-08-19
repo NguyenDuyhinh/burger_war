@@ -285,7 +285,7 @@ public:
            try
            {
                tf::StampedTransform trans;
-               tfl_.waitForTransform(ROBOT_NAME+"/map", ROBOT_NAME+"+base_link", ros::Time(0), ros::Duration(0.5));
+               tfl_.waitForTransform(ROBOT_NAME+"/map", ROBOT_NAME+"/base_link", ros::Time(0), ros::Duration(0.5));
                tfl_.lookupTransform(ROBOT_NAME+"/map", ROBOT_NAME+"/base_link", ros::Time(0), trans);
 
                x = trans.getOrigin().x(); 
