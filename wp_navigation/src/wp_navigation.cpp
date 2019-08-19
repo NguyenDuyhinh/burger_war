@@ -17,7 +17,7 @@
 #include <tf/transform_listener.h>
 
 #define GAIN_CHASE -0.01
-#define PNT_START_CHASE 13
+#define PNT_START_CHASE 9
 
 typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
 std::string ROBOT_NAME;
