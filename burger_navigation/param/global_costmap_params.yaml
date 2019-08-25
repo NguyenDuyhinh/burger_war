@@ -1,6 +1,7 @@
 global_costmap:
   global_frame: map
-  robot_base_frame: base_footprint
+  robot_base_frame: base_link_scanmatch
+  # robot_base_frame: base_footprint
 
   update_frequency: 10.0
   publish_frequency: 10.0
@@ -8,4 +9,4 @@ global_costmap:
   resolution: 0.01
 
   static_map: true
- 
+
