@@ -82,9 +82,16 @@
     <param name="DWAPlannerROS/min_vel_x" value="0.0" if="$(arg move_forward_only)" />
 
     <param name="local_costmap/global_frame"             value="$(arg robot_name)/odom"/>
+<<<<<<< HEAD
     <param name="local_costmap/robot_base_frame"             value="$(arg robot_name)/base_footprint"/>
     <param name="global_costmap/robot_base_frame"            value="$(arg robot_name)/base_footprint"/>
+=======
+    <param name="local_costmap/robot_base_frame"             value="$(arg robot_name)/base_link"/>
+    <param name="local_costmap/scan/sensor_frame"             value="$(arg robot_name)/base_scan"/>
+    <param name="global_costmap/robot_base_frame"            value="$(arg robot_name)/base_link"/>
+>>>>>>> upstream/master
     <param name="global_costmap/global_frame"            value="$(arg robot_name)/map"/>
+    <param name="global_costmap/scan/sensor_frame"             value="$(arg robot_name)/base_scan"/>
   </node>
 
   <!-- rviz -->
