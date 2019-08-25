@@ -109,11 +109,11 @@ public:
 	    if(m_state == STATE_CHASE) {
                ros::Duration tick = ros::Time::now() - m_timechasestr;
                double tickdbl = tick.toSec();
-      
+
                m_frontspeed = 0.2;
                m_turnspeed = m_diffPos * GAIN_CHASE;
                ROS_INFO("CHASE PHASE(1) %f", tickdbl);
-           
+
                /*
                if( tickdbl <= 8.0 ){
                   m_frontspeed = 0.1;
@@ -156,12 +156,12 @@ public:
                     m_turnspeed = -2.0;
                  }else if (tickdbl <= 3.0 ){
                     m_frontspeed = 0.0;
-                    m_turnspeed =  2.0;  
+                    m_turnspeed =  2.0;
                  }else if (tickdbl <= 5.0 ){
                     m_frontspeed = 0.0;
-                    m_turnspeed = -2.0;  
+                    m_turnspeed = -2.0;
                  }else{time_idle = ros::Time::now() - ros::Duration(1.0);}
- 
+
              }
 
 	     ROS_INFO("NOW %d", m_state);
@@ -193,7 +193,7 @@ public:
 
                 if(state == actionlib::SimpleClientGoalState::ABORTED)
                 {
-                
+
                    ROS_INFO("NO MORE WAYPOINT!!!");
                    m_state = STATE_IDLE;
                    time_idle = ros::Time::now();
@@ -213,7 +213,7 @@ public:
 
                 //ros::Duration(1.0).sleep();
 	        //sendWaypoint(++m_destPnt);
-	      
+
               }else {
                 // 到着してないなら何もしない
 	        ROS_INFO("WP not reached: No.%d (%s)",m_destPnt+1, state.toString().c_str());
@@ -273,7 +273,7 @@ public:
 
        bool getCurrentPosition()
        {
-           
+
            double x,y,yaw;
            try
            {
@@ -281,7 +281,7 @@ public:
                tfl_.waitForTransform("/map", "/base_link", ros::Time(0), ros::Duration(0.5));
                tfl_.lookupTransform("/map", "/base_link", ros::Time(0), trans);
 
-               x = trans.getOrigin().x(); 
+               x = trans.getOrigin().x();
                y = trans.getOrigin().y();
                yaw = tf::getYaw(trans.getRotation());
            }
@@ -294,7 +294,7 @@ public:
             ROS_INFO("Now Pos %0.3f %0.3f %0.3f", x, y, yaw);
 
            return true;
-       } 
+       }
 
        void imageCb(const sensor_msgs::ImageConstPtr& msg)
        {
@@ -315,7 +315,7 @@ public:
 	    }
 
 	    cv::cvtColor(cv_ptr->image,hsv,CV_BGR2HSV);
-	    cv::inRange(hsv, cv::Scalar(60-range, 80, 0), cv::Scalar(60+range, 255, 255), mask); // 色検出でマスク画像の作成
+	    cv::inRange(hsv, cv::Scalar(60-range, 50, 50), cv::Scalar(60+range, 255, 255), mask); // 色検出でマスク画像の作成
 	    //cv::bitwise_and(cv_ptr->image,mask,image);
 
 	    cv::Moments mu = cv::moments( mask, false );
@@ -335,23 +335,23 @@ public:
 
                 // STATE_CHASEに入る前の状態を保存
                 switch( m_state ){
- 
+
                 case STATE_WAYPOINT:
                       cancelWayPoint();
                       break;
-  
+
                 case STATE_IDLE:
                       laststate = m_state;
                       m_timechasestr = ros::Time::now();
                       break;
-                
+
                 default:
                       break;
                 }
 
                 // STATE_CHASEに遷移
                 m_state = STATE_CHASE;
-             
+
              // 敵を見失う or そもそも敵を見つけていない場合
 	     } else {
                m_diffPos = 0;

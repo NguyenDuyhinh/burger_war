@@ -1,3 +1,16 @@
+##### 2019/08/25
+* 実機同様,namespase無しで起動するシミュレーションを追加
+```bash
+# シミュレーション+審判サーバで立ち上げる場合
+roscd burger_war../; bash scripts/sim_with_judge_nons.sh
+# or シミュレーションのみを立ち上げる場合
+roslaunch burger_war setup_sim_nons.launch
+
+# navigationの立ち上げ
+roslaunch burger_war your_burger.launch
+
+```
+
 # burger_war
 ロボットで戦車対戦をするゲームです。
 大砲で撃つ代わりに、カメラでターゲットのARマーカーを読み取ります。<BR>
@@ -71,7 +84,7 @@ export GAZEBO_MODEL_PATH=$HOME/catkin_ws/src/burger_war/burger_war/models/
 - aruco
 
 ```
-# pip のインストール 
+# pip のインストール
 sudo apt-get install python-pip
 #　requests flask のインストール
 sudo pip install requests flask
@@ -120,7 +133,7 @@ bash scripts/start.sh
 
 審判サーバーを立ち上げずにシミュレータとロボットのみ立ち上げる場合
 ```
-roslaunch burger_war　setup_sim.launch
+roslaunch burger_war setup_sim.launch
 ```
 フィールドとロボットが立ち上がったら
 別のターミナルで下記ロボット動作スクリプトを実行
@@ -164,7 +177,7 @@ roslaunch burger_war your_burger.launch side:=b
 ### サンプルについて補足
 `your_burger.launch`の引数`robot_name` `side`についてその経緯を補足する。
 シミュレーターでは1つのGAZEBOシミュレーター内で2台のロボット動かしている。しかしGAZEBOサーバーとROSMASTERは1:1に対応していて1つのGAZEBOサーバーに2つ以上のROSMASTERを接続することができなかった。(方法知っている人いたら教えて下さい。)そのため、1つのROSMASTERで、別々のネームスペースを使って2台のロボットを動かしている。
-赤サイドのロボットを`red_bot`, 青サイドのロボットを`blue_bot`としている。これらネームスペースはやり取りされるトピック及び、座標系を表すTFにも反映する必要がある。ロボットのネームスペースは`robot_name`という名前の引数でlaunchファイルに渡される。 
+赤サイドのロボットを`red_bot`, 青サイドのロボットを`blue_bot`としている。これらネームスペースはやり取りされるトピック及び、座標系を表すTFにも反映する必要がある。ロボットのネームスペースは`robot_name`という名前の引数でlaunchファイルに渡される。
 
 実機の場合は上記のような制約はないためネームスペースは使用しない。`robot_name:=''`というようにネームスペースを表す引数は空で実行される。
 
@@ -179,7 +192,7 @@ roslaunch burger_war your_burger.launch side:=b
 ## ファイル構成
 各ディレクトリの役割と、特に参加者に重要なファイルについての説明
 
-下記のようなディレクトリ構成になっています。  
+下記のようなディレクトリ構成になっています。
 
 ```
 burger_war
@@ -202,7 +215,7 @@ burger_war
 │   ├── log   ログがここにたまる
 │   ├── marker_set  マーカーの配置設定ファイル置き場
 │   ├── picture  観戦画面用画像素材
-│   ├── README.md  
+│   ├── README.md
 │   ├── test_scripts   初期化などのスクリプト
 │   └── visualizeWindow.py  観戦画面表示プログラム
 |
@@ -215,7 +228,7 @@ burger_war
 ↑ディレクトリと特に重要なファイルのみ説明しています。
 
 ## 推奨動作環境
-- Ubuntu 16.04 
+- Ubuntu 16.04
 - Ros kinetic
 2018年からkineticで開発しています｡
 

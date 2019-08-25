@@ -1,16 +1,14 @@
 <?xml version="1.0"?>
 <launch>
+  <include file="$(find wp_navigation)/launch/wp_navigation.launch">
+    <arg name="robot_name" value="" />
+  </include>
 
-      <include file="$(find wp_navigation)/launch/wp_navigation.launch">
-
-        <arg name="robot_name" value="" />
-      </include>
-
-    <!-- ps3_controler -->
-    <node pkg="joy" type="joy_node" name="joy_node" args="" output="screen" required="true" >
-     <param name="autorepeat_rate" value="20"/>
-    </node>
-    <node pkg="ros_start" type="joy_twist_logicool" name="joy_twist" args="" output="screen" />
+  <!-- ps3_controler -->
+  <node pkg="joy" type="joy_node" name="joy_node" args="" output="screen" required="true">
+    <param name="autorepeat_rate" value="20"/>
+  </node>
+  <node pkg="ros_start" type="joy_twist_logicool" name="joy_twist" args="" output="screen" />
 
 </launch>
 
