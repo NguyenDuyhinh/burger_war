@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="robot_name" default="red_bot"/>
+  <arg name="robot_name" default=""/>
 
   <!-- move_baseの起動 -->
   <include file="$(find burger_navigation)/launch/burger_navigation.launch">
@@ -8,7 +8,7 @@
   </include>
 
   <!-- ウェイポイント送信ノードの起動 -->
-  <node pkg="wp_navigation" type="wp_navigation" name="$(anon wp_navigation)" launch-prefix="xterm -font r16 -bg blue -e">
+  <!--<node pkg="wp_navigation" type="wp_navigation" name="$(anon wp_navigation)" launch-prefix="xterm -font r16 -bg blue -e">
     <param name="robot_name" value="$(arg robot_name)"/>
-  </node>
+  </node>-->
 </launch>

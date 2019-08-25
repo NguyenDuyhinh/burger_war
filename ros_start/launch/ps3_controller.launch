@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+
+<launch>
+    <node pkg="joy" type="joy_node" name="joy_node" args="" output="screen" required="true" />
+    <node pkg="ros_start" type="joy_twist" name="joy_twist" args="" output="screen" />
+</launch>

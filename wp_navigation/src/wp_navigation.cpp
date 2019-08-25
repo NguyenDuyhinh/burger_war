@@ -20,7 +20,6 @@
 #define PNT_START_CHASE 9
 
 typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
-std::string ROBOT_NAME;
 
 struct MyPose {
   double x;
@@ -56,7 +55,7 @@ private:
 	};
 
 public:
-	RoboCtrl() : it_(node), ac(ROBOT_NAME+"move_base", true)
+	RoboCtrl() : it_(node), ac("move_base", true)
 	{
 	   ros::NodeHandle node;
            //購読するtopic名
@@ -75,7 +74,7 @@ public:
            // まず最初はウェイポイント
 	   m_state = STATE_WAYPOINT;
 
-      MoveBaseClient ac(ROBOT_NAME+"/move_base", true);
+      MoveBaseClient ac("/move_base", true);
 	   initWaypoint();
 	   cv::namedWindow(OPENCV_WINDOW);
 	}
@@ -232,7 +231,7 @@ public:
          // ウェイポイントの更新 or 初回時 or STATE_CHASEからの復帰
          move_base_msgs::MoveBaseGoal goal;
          // map(地図)座標系
-         goal.target_pose.header.frame_id = ROBOT_NAME+"/map";
+         goal.target_pose.header.frame_id = "/map";
          // 現在時刻
          goal.target_pose.header.stamp = ros::Time::now();
          goal.target_pose.pose.position.x =  way_point[n_ptr].x;
@@ -279,8 +278,8 @@ public:
            try
            {
                tf::StampedTransform trans;
-               tfl_.waitForTransform(ROBOT_NAME+"/map", ROBOT_NAME+"/base_link", ros::Time(0), ros::Duration(0.5));
-               tfl_.lookupTransform(ROBOT_NAME+"/map", ROBOT_NAME+"/base_link", ros::Time(0), trans);
+               tfl_.waitForTransform("/map", "/base_link", ros::Time(0), ros::Duration(0.5));
+               tfl_.lookupTransform("/map", "/base_link", ros::Time(0), trans);
 
                x = trans.getOrigin().x(); 
                y = trans.getOrigin().y();
@@ -300,7 +299,7 @@ public:
        void imageCb(const sensor_msgs::ImageConstPtr& msg)
        {
 	    const int centerpnt = 200;
-            const int range = 10;
+            const int range = 20;//10;
             static EState laststate = m_state;
             double area_min =0;
 
@@ -316,7 +315,7 @@ public:
 	    }
 
 	    cv::cvtColor(cv_ptr->image,hsv,CV_BGR2HSV);
-	    cv::inRange(hsv, cv::Scalar(60-range, 100, 100), cv::Scalar(60+range, 255, 255), mask); // 色検出でマスク画像の作成
+	    cv::inRange(hsv, cv::Scalar(60-range, 80, 0), cv::Scalar(60+range, 255, 255), mask); // 色検出でマスク画像の作成
 	    //cv::bitwise_and(cv_ptr->image,mask,image);
 
 	    cv::Moments mu = cv::moments( mask, false );
@@ -415,9 +414,7 @@ int main(int argc, char **argv)
 	RoboCtrl robo_ctrl;
 	ros::Rate r(20);
 
-   ros::param::get("~robot_name", ROBOT_NAME);
-   ROS_INFO("ROBOT_NAME: %s \n\r",ROBOT_NAME.c_str());
-	while (ros::ok())
+   	while (ros::ok())
 	{
 		robo_ctrl.moveRobo();
 		ros::spinOnce();

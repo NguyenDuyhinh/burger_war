@@ -21,7 +21,7 @@
 
   <!-- Map server -->
   <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)">
-    <param name="frame_id"           value="$(arg robot_name)/map"/>
+    <param name="frame_id"           value="map"/>
   </node>
 
 
@@ -61,9 +61,9 @@
     <param name="odom_alpha2"               value="0.1"/>
     <param name="odom_alpha3"               value="0.1"/>
     <param name="odom_alpha4"               value="0.1"/>
-    <param name="odom_frame_id"             value="$(arg robot_name)/odom"/>
-    <param name="base_frame_id"             value="$(arg robot_name)/base_footprint"/>
-    <param name="global_frame_id"           value="$(arg robot_name)/map"/>
+    <param name="odom_frame_id"             value="odom"/>
+    <param name="base_frame_id"             value="base_footprint"/>
+    <param name="global_frame_id"           value="map"/>
   </node>
 
 
@@ -78,15 +78,9 @@
     <rosparam file="$(find burger_navigation)/param/dwa_local_planner_params_burger.yaml" command="load" />
     <remap from="cmd_vel" to="$(arg cmd_vel_topic)"/>
     <remap from="odom" to="$(arg odom_topic)"/>
-    <remap from="scan" to="$(arg robot_name)/scan"/>
+    <remap from="scan" to="scan"/>
     <param name="DWAPlannerROS/min_vel_x" value="0.0" if="$(arg move_forward_only)" />
 
-    <param name="local_costmap/global_frame"             value="$(arg robot_name)/odom"/>
-    <param name="local_costmap/robot_base_frame"             value="$(arg robot_name)/base_link"/>
-    <param name="local_costmap/scan/sensor_frame"             value="$(arg robot_name)/base_scan"/>
-    <param name="global_costmap/robot_base_frame"            value="$(arg robot_name)/base_link"/>
-    <param name="global_costmap/global_frame"            value="$(arg robot_name)/map"/>
-    <param name="global_costmap/scan/sensor_frame"             value="$(arg robot_name)/base_scan"/>
   </node>
 
   <!-- rviz -->
