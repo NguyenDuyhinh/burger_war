@@ -278,8 +278,8 @@ public:
            try
            {
                tf::StampedTransform trans;
-               tfl_.waitForTransform("/map", "/base_link", ros::Time(0), ros::Duration(0.5));
-               tfl_.lookupTransform("/map", "/base_link", ros::Time(0), trans);
+               tfl_.waitForTransform("map", "base_link2", ros::Time(0), ros::Duration(0.5));
+               tfl_.lookupTransform("map", "base_link2", ros::Time(0), trans);
 
                x = trans.getOrigin().x();
                y = trans.getOrigin().y();

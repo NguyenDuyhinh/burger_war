@@ -11,4 +11,7 @@
   <node pkg="wp_navigation" type="wp_navigation" name="$(anon wp_navigation)" launch-prefix="xterm -font r16 -bg blue -e">
     <param name="robot_name" value="$(arg robot_name)"/>
   </node>
+
+  <include file="$(find wp_navigation)/launch/odom_filter.launch">
+  </include>
 </launch>

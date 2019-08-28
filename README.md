@@ -1,3 +1,14 @@
+##### 2019/08/28
+* IMUを用いたオドメトリの精度改善
+* LRFを用いたスキャンマッチ
+による自己位置推定精度の改善を追加(上記2種の切り替え,どちらかのみ)
+```bash
+# 必要なパッケージのインストール
+sudo apt-get -y install ros-kinetic-robot-localization ros-kinetic-laser-scan-matcher
+# 今後LRFのデータを取得するときは,/scan2 を利用すること
+# base_linkなど既存のフレームIDは変更できず,TFツリーを新しく生成しているため
+```
+
 ##### 2019/08/25
 * 実機同様,namespase無しで起動するシミュレーションを追加
 ```bash

@@ -6,8 +6,8 @@
   <arg name="open_rviz" default="true"/>
   <arg name="move_forward_only" default="false"/>
   <arg name="cmd_vel_topic" default="cmd_vel" />
-  <arg name="odom_topic" default="odom" />
-  <arg name="scan_topic"     default="scan"/>
+  <arg name="odom_topic" default="odom2" />
+  <arg name="scan_topic"     default="scan2"/>
   <arg name="initial_pose_x" default="-1.3"/>
   <arg name="initial_pose_y" default="0.0"/>
   <arg name="initial_pose_a" default="0.0"/>
@@ -62,7 +62,7 @@
     <param name="odom_alpha3"               value="0.1"/>
     <param name="odom_alpha4"               value="0.1"/>
     <param name="odom_frame_id"             value="odom"/>
-    <param name="base_frame_id"             value="base_footprint"/>
+    <param name="base_frame_id"             value="base_footprint2"/>
     <param name="global_frame_id"           value="map"/>
   </node>
 
@@ -84,7 +84,7 @@
   </node>
 
   <!-- rviz -->
-  <group if="$(arg open_rviz)"> 
+  <group if="$(arg open_rviz)">
     <node pkg="rviz" type="rviz" name="rviz" required="true" args="-d $(find burger_navigation)/rviz/$(arg robot_name)_navigation.rviz" launch-prefix="xterm -font r16 -bg black -e">
       <remap from="/move_base_simple/goal" to="move_base_simple/goal"/>
     </node>
