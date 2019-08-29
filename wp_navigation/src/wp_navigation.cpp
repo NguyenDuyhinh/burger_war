@@ -19,6 +19,8 @@
 #define GAIN_CHASE -0.01
 #define PNT_START_CHASE 9
 
+int TRACE_AREA_SIZE;
+
 typedef actionlib::SimpleActionClient<move_base_msgs::MoveBaseAction> MoveBaseClient;
 
 struct MyPose {
@@ -308,7 +310,7 @@ public:
 
        void imageCb(const sensor_msgs::ImageConstPtr& msg)
        {
-	    const int centerpnt = 200;
+	    const int centerpnt = msg->width/2;
             const int range = 20;//10;
             static EState laststate = m_state;
             double area_min =0;
@@ -337,10 +339,15 @@ public:
             ROS_INFO("AREA = %f", area);
 
             if(m_destPnt >= PNT_START_CHASE){area_min = 20000;}
-            else{area_min = 250000;}
+            else{area_min = TRACE_AREA_SIZE;}
 
             // 敵が見つかったら追跡する
-	    if( (x >= 0) && (x <= 400) && (area > area_min) ){
+        static ros::Time lastEnmDetectTime;
+	    if( (x >= 0) && (x <= msg->width) && (area > area_min) ){
+	     ROS_WARN("ENEMY DETECTED");
+
+
+            lastEnmDetectTime = ros::Time::now();
       		m_diffPos = x - centerpnt;
 
                 // STATE_CHASEに入る前の状態を保存
@@ -364,11 +371,13 @@ public:
 
              // 敵を見失う or そもそも敵を見つけていない場合
 	     } else {
+             if (1.5<(ros::Time::now()-lastEnmDetectTime).toSec()){
                m_diffPos = 0;
                // STATE_CHASEに入る前の状態を戻す
                if( m_state == STATE_CHASE ){
                m_state = laststate;
                }
+             }
 	     }
 
 	     //ROS_INFO("obj x=%d y=%d",x,y);
@@ -423,6 +432,9 @@ int main(int argc, char **argv)
 	ros::init(argc, argv, "robo_ctrl");
 	RoboCtrl robo_ctrl;
 	ros::Rate r(20);
+
+   ros::param::get("~trace_area_size", TRACE_AREA_SIZE);
+   ROS_INFO("TRACE_AREA_SIZE: %d \n\r",TRACE_AREA_SIZE);
 
    	while (ros::ok())
 	{
