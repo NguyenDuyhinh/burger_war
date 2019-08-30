@@ -6,7 +6,7 @@
   <include file="$(find burger_navigation)/launch/burger_navigation.launch">
     <arg name="robot_name" value="$(arg robot_name)" />
   </include>
-
+  
   <!-- ウェイポイント送信ノードの起動 -->
   <node pkg="wp_navigation" type="wp_navigation" name="$(anon wp_navigation)" launch-prefix="xterm -font r16 -bg blue -e">
     <param name="robot_name" value="$(arg robot_name)"/>
