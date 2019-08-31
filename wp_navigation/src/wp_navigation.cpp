@@ -17,7 +17,7 @@
 #include <tf/transform_listener.h>
 
 #define GAIN_CHASE -0.01
-#define PNT_START_CHASE 9
+#define PNT_START_CHASE 22
 
 int TRACE_AREA_SIZE;
 
@@ -390,7 +390,7 @@ public:
 
     if (m_destPnt >= PNT_START_CHASE)
     {
-      area_min = 20000;
+      area_min = 700000;
     }
     else
     {
