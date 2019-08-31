@@ -82,6 +82,7 @@ private:
   };
 
 public:
+  EState m_state;
   RoboCtrl() : it_(node), ac("move_base", true)
   {
     ros::NodeHandle node;
@@ -136,13 +137,15 @@ public:
     getCurrentPosition();
 
     // 壁際から抜け出すために最初に直進
+    ROS_INFO("robo state: %d", m_state);
     if (m_state == STATE_INITIAL_GO)
     {
       m_frontspeed = 0.2;
       m_turnspeed = 0;
-      if (0.5 < (ros::Time::now() - time_start).toSec())
+      ROS_INFO("time duration: %f", (ros::Time::now() - time_start).toSec());
+      if (3.0 < (ros::Time::now() - time_start).toSec())
       {
-        m_state == STATE_CHASE;
+        m_state = STATE_WAYPOINT;
       }
     }
 
@@ -464,7 +467,6 @@ private:
   image_transport::ImageTransport it_;
   image_transport::Subscriber image_sub_;
 
-  EState m_state;
 
   // ロボット制御用
   double m_diffPos;
