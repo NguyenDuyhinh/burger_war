@@ -33,7 +33,7 @@ struct MyPose
 };
 
 MyPose way_point[] = {
-    {-1.150, -0.087, -0.785, false, 0.0}, // 右手前ブロック、手前側の点を取る
+   // {-1.150,  0.000, -0.785, false, 0.0}, // 右手前ブロック、手前側の点を取る -0.087
     {-0.788, -0.496, -0.760, false, 0.0},
     {-0.812, -0.464, -0.000, false, 0.0},
     {-0.812, -0.464, 1.546, false, 0.0}, // 左手前ブロック、手前側の点を取る
@@ -268,7 +268,7 @@ public:
           ++m_destPnt;
         }
 
-        ros::Duration(1.5).sleep(); //次のwaypoint送る前に安定タイマー
+        ros::Duration(1.0).sleep(); //次のwaypoint送る前に安定タイマー
                                     //sendWaypoint(++m_destPnt);
       }
       else
